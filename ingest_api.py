@@ -13,6 +13,6 @@ with open('config.json') as js:
 
 url = cfg['base'] + '?' + cfg['where'] + '&' + cfg['limit']
 
-response = requests.get(url, auth=(key_id, key_secret))
+api_response = requests.get(url, auth=(key_id, key_secret))
 
-df = pd.json_normalize(response.json())
+df = pd.json_normalize(api_response.json())
