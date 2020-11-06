@@ -1,0 +1,5 @@
+{
+  "base": "https://data.cityofchicago.org/resource/yhhz-zm2v.json",
+  "where": "$where=week_start%20%3E%20%222020-01-01T00:00:00.000%22",
+  "limit": "$limit=50000"
+}
