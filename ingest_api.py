@@ -1,5 +1,6 @@
-import requests
 import json
+from urllib.parse import urlencode  # serialize URL encodings from dict
+import requests
 import pandas as pd
 import os
 
@@ -11,7 +12,7 @@ key_secret = os.getenv('CHIDATAPORTAL_SECRET')
 with open('config.json') as js:
     cfg = json.load(js)
 
-url = cfg['base'] + '?' + cfg['where'] + '&' + cfg['limit']
+url = cfg['baseurl'] + urlencode(cfg['qrystr'])
 
 api_response = requests.get(url, auth=(key_id, key_secret))
 
