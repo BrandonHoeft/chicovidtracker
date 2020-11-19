@@ -1,20 +1,20 @@
 import requests
 import pandas as pd
-from api_helpers import build_url_from_config, get_env_vars
+from chicovidtracker.api_helpers import load_config, get_env_vars, build_url_from_config
 
-# call API key for basic auth
-key_id = get_env_vars('CHIDATAPORTAL_ID')
-key_secret = get_env_vars('CHIDATAPORTAL_SECRET')
+config = load_config()
+key_id, key_secret = get_env_vars(config['api_id_varname'],
+                                  config['api_secret_varname'])
 url = build_url_from_config("baseurl", "qrystr")
 
-def get_api_json(target_url, api_key, api_secret):
+def get_api_json(target_url, api_id, api_secret):
     """make get request to Socrata Chicago Data Portal API
 
     Parameters
     ----------
     target_url : str
         a validly formed URL string
-    api_key : str
+    api_id : str
         API key id for HTTP basic auth
     api_secret : str
         API secret passcode for HTTP basic auth
@@ -29,7 +29,7 @@ def get_api_json(target_url, api_key, api_secret):
     list
         if successful, a list of dicts is returned
     """
-    api_response = requests.get(target_url, auth=(api_key, api_secret))
+    api_response = requests.get(target_url, auth=(api_id, api_secret))
 
     try:
         api_response.raise_for_status()

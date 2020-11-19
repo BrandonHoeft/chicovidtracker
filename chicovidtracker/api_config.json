@@ -3,5 +3,7 @@
   "qrystr": {
       "$where": "week_start >= '2020-01-01T00:00:00.000'",
       "$limit": "50000"
-  }
+  },
+  "api_id_varname": "CHIDATAPORTAL_ID",
+  "api_secret_varname": "CHIDATAPORTAL_SECRET"
 }
