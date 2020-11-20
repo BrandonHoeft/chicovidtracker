@@ -3,8 +3,7 @@ import pandas as pd
 from chicovidtracker.api_helpers import load_config, get_env_vars, build_url_from_config
 
 config = load_config()
-key_id, key_secret = get_env_vars(config['api_id_varname'],
-                                  config['api_secret_varname'])
+key_id, key_secret = get_env_vars(config['env_vars'])
 url = build_url_from_config("baseurl", "qrystr")
 
 def get_api_json(target_url, api_id, api_secret):

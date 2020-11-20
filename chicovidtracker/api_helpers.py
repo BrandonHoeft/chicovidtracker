@@ -9,23 +9,21 @@ def load_config():
     return config
 
 
-def get_env_vars(*args):
-    """get OS environment variable values given the name(s) of env variables
+def get_env_vars(var_list):
+    """get preconfigured OS environment variable values
 
     Parameters
     ----------
-    *args : str
-        one string, or multiple csv strings. case insensitive
+    var_list : list
+        list of environment variables. case insensitive
 
     Returns
     -------
     str
         a str or a list of strings depending on parameter input length
     """
-    args_upper = [*map(str.upper, args)]
-    environ_vars = []
-    for elem in args_upper:
-         environ_vars.append(os.getenv(elem))
+    var_list_upper = [*map(str.upper, var_list)]
+    environ_vars = [os.getenv(name) for name in var_list_upper]
     return environ_vars
 
 
