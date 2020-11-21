@@ -2,6 +2,7 @@ from urllib.parse import urlencode  # serialize URL encodings from dict
 import json
 import os
 
+
 def load_config():
     """Load the api_config.json file."""
     with open("chicovidtracker/api_config.json") as js:
@@ -28,7 +29,7 @@ def get_env_vars(var_list):
 
 
 def build_url_from_config(base_str, query_str):
-    """ reads api_config.json to build URL for Socrata Chicago Data Portal API
+    """build encoded URL string for Socrata Chicago Data Portal API
 
     Parameters
     ----------
@@ -38,9 +39,8 @@ def build_url_from_config(base_str, query_str):
     Returns
     -------
     str
-        a hopefully valid URL string for the API
+        a valid URL string for the API
 
     """
-    with open('chicovidtracker/api_config.json') as js:
-        cfg = json.load(js)
-    return cfg[base_str] + urlencode(cfg[query_str])
+    return base_str + urlencode(query_str)
+
