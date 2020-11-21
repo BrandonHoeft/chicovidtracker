@@ -3,9 +3,9 @@ import json
 import os
 
 
-def load_config():
+def load_config(path_str):
     """Load the api_config.json file."""
-    with open("chicovidtracker/api_config.json") as js:
+    with open(path_str) as js:
         config = json.load(js)
     return config
 
