@@ -1,6 +1,10 @@
 import pytest
-from chicovidtracker.api_helpers import get_env_vars, build_url_from_config
+import json
+from chicovidtracker.api_helpers import load_config, get_env_vars, build_url_from_config
 
+# fixtures get passed as args to tests to facilitate:
+# setup - bringing env to a state where testing can begin
+# teardown - bringing the environment to clean, original state for next test
 @pytest.fixture
 def url_inputs():
     base = "https://data.cityofchicago.org/resource/yhhz-zm2v.json?"
@@ -8,14 +12,31 @@ def url_inputs():
     return base, qry
 
 
-#def test_load_config_1():
+@pytest.fixture
+def config_filepath(tmpdir):  # tmpdir is a chained pytest fixture
+    """create temporary config dir and data for testing load_config()"""
+    test_config_path = tmpdir.join("test_config.json")
+    data = {"name": "Severus Snape",
+            "positions": ["Potions Master", "Defense Against the Dark Arts"]}
+    with open(test_config_path, "w") as f:
+        json.dump(data, f)
+    yield test_config_path
+
+
+def test_load_config_1(config_filepath):
+    """test the return value is a dict"""
+    assert isinstance(load_config(config_filepath), dict)
+
+def test_load_config_2():
+    """test for exception FileNotFoundError"""
+
 
 
 #def test_get_env_vars_1():
 
 
 def test_build_url_from_config_1(url_inputs):
-    expected = 'https://data.cityofchicago.org/resource/yhhz-zm2v.json?%24where=week_start+%3E%3D+%272020-11-15T00%3A00%3A00.000%27&%24limit=1'
+    expected = 'http://data.cityofchicago.org/resource/yhhz-zm2v.json?%24where=week_start+%3E%3D+%272020-11-15T00%3A00%3A00.000%27&%24limit=1'
     actual = build_url_from_config(*url_inputs)
     message = "expected value: {0}\nactual value: {1}".format(expected, actual)
     assert actual == expected, message
