@@ -28,12 +28,10 @@ def get_api_json(target_url, api_id, api_secret):
     list
         if successful, a list of dicts is returned
     """
-    api_response = requests.get(target_url, auth=(api_id, api_secret))
-
     try:
+        api_response = requests.get(target_url, auth=(api_id, api_secret))
         api_response.raise_for_status()
     except requests.exceptions.RequestException as e:
-        # return errors from bad requests
         return f"error: {e}"
 
     # if a successful response status code
