@@ -2,9 +2,9 @@ import pytest
 import json
 from chicovidtracker.api_helpers import load_config, get_env_vars, build_url_from_config
 
-# fixtures get passed as args to tests to facilitate:
-# setup - bringing env to a state where testing can begin
-# teardown/cleanup - bring environment to clean, original state after test ends
+# fixture setup
+# setup - bringing the test's env to a state where testing can begin
+# teardown/cleanup - bring the environment to clean, original state when test ends
 @pytest.fixture
 def url_inputs():
     base = "https://data.cityofchicago.org/resource/yhhz-zm2v.json?"
@@ -23,6 +23,17 @@ def config_filepath(tmpdir):  # tmpdir is a chained pytest fixture
     yield test_config_path
 
 
+@pytest.fixture  # https://docs.pytest.org/en/stable/monkeypatch.html#monkeypatching-environment-variables
+def mock_two_env_vars(monkeypatch):
+    monkeypatch.setenv("SHELL", "/bin/bash")
+    monkeypatch.setenv("USER", "Hedwig")
+
+
+@pytest.fixture
+def mock_missing_env_var(monkeypatch):
+    monkeypatch.delenv("HOME", raising=False)
+
+
 def test_load_config_1(config_filepath):
     """test the return value is a dict"""
     assert isinstance(load_config(config_filepath), dict)
@@ -36,7 +47,20 @@ def test_load_config_2(config_filepath):
     assert actual['positions'][0] == "Potions Master"
 
 
-#def test_get_env_vars_1():
+def test_get_env_vars_1(mock_two_env_vars):
+    """test pulling environment variables from OS"""
+    inputs = ['SHELL', 'USER']
+    assert get_env_vars(inputs) == ['/bin/bash', 'Hedwig']
+
+
+# https://docs.pytest.org/en/stable/assert.html#assertions-about-expected-exceptions
+def test_key_error_get_env_vars_2(mock_missing_env_var):
+    """If get_env_vars() raises KeyError with specific message under this mocked
+    environment variable test, the test passes"""
+    expected_exception_msg = "'HOME' is not an environment variable"
+    with pytest.raises(KeyError) as exception_info:
+        get_env_vars(['HOME', 'HISTSIZE'])
+    assert exception_info.match(expected_exception_msg)
 
 
 def test_build_url_from_config_1(url_inputs):

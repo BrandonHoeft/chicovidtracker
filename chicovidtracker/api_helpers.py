@@ -32,9 +32,9 @@ def get_env_vars(var_list):
     environ_var_values = []
     for i, var in enumerate(var_list_upper):
         try:
-            environ_var_values.append(os.environ[var])
+            environ_var_values.append(os.environ[var]) # method treats env as a dict
         except KeyError as e:
-            print(f"Error: value at position {i}, {e}, is not an environment variable")
+            raise KeyError(f"{e} is not an environment variable")
     return environ_var_values
 
 
