@@ -18,14 +18,24 @@ def get_env_vars(var_list):
     var_list : list
         list of environment variables. case insensitive
 
+    Raises
+    -------
+    KeyError
+        raised when an environment variable does not exist in the OS
+
     Returns
     -------
     str
         a str or a list of strings depending on parameter input length
     """
     var_list_upper = [*map(str.upper, var_list)]
-    environ_vars = [os.getenv(name) for name in var_list_upper]
-    return environ_vars
+    environ_var_values = []
+    for i, var in enumerate(var_list_upper):
+        try:
+            environ_var_values.append(os.environ[var])
+        except KeyError as e:
+            print(f"Error: value at position {i}, {e}, is not an environment variable")
+    return environ_var_values
 
 
 def build_url_from_config(base_str, query_str):
