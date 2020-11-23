@@ -1,4 +1,3 @@
-# for Travis CI to properly
 from setuptools import setup, find_packages
 find__init__ = find_packages()
 
