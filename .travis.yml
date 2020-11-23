@@ -8,4 +8,4 @@ install:
 script:
   - pytest --cov=chicovidtracker tests  # --cov points to the pkg directory for code coverage
 after_success:
-  - codecov  # push code coverage results after each build to codecov.io
+  - codecov  # push coverage results to codecov.io
