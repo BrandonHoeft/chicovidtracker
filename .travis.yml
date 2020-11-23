@@ -7,6 +7,6 @@ install:
   - python setup.py install  # install the source package being tested by Travis CI
 
 script:
-  - pytest -p pytest-cov --cov=chicovidtracker tests  # load plugin before test runs for accurate coverage reports
+  - pytest -p pytest_cov --cov=chicovidtracker tests  # load plugin before test runs for accurate coverage reports. Example: https://doc.pytest.org/en/latest/usage.html#early-loading-plugins
 after_success:
   - codecov  # push coverage results to codecov.io
